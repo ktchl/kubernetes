@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: eval
+spec:
+  serviceName: mysql
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          ports:
+            - containerPort: 3306
+              protocol: TCP
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-root-password
+                  key: password
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_HOST
+              value: "mysql-service-clusterip.eval.svc.cluster.local"
+            
+          envFrom:
+            - secretRef:
+                name: mysql-user
+          volumeMounts:
+            - name: pvc-kenny
+              mountPath: /var/lib/mysql 
+  volumeClaimTemplates:
+    - metadata:
+        name: pvc-kenny
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi

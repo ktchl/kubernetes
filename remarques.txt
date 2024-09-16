@@ -1,0 +1,30 @@
+Mon dossier data contient 
+- les données des différentes tables que j'ai créé sur FastAPI
+
+Mon dossier mysql contient:
+- mysql-local-data-folder-pv.yaml (volume persistant)
+- secret-root-password.yml (secrets identifiants mysql)
+- serviceClusterIP.yml (service clusterIP)
+- statefulset.yml (statefulset qui va permettre de créer le pod mysql et le pvc)
+
+Mon dossier fastapi contient:
+- my-api.yml (deploiement de mon app FastAPI)
+- serviceNodeport.yml (service nodeport qui va permettre de me connecter à FastAPI sur ma machine sur le port 30000)
+
+Mon dossier test contient:
+- le dossier k8s-eval-fastapi à l'intérieur on retrouve le Dockerfile, l'application ainsi le fichier de création de pod.
+
+J'ai créé une autre route / pour tester que mon api fonctionne bien.
+
+Mes secrets dans défini dans les variables d'environnements:
+- MYSQL_USER: kenny
+- MYSQL_PASSWORD: kenny
+- MYSQL_DATABASE: kennyDB
+J'ai créé deux autres variable d'environnement:
+- MYSQL_HOST: mysql-service-clusterip.eval.svc.cluster.local
+- MYSQL_PORT: 3307
+
+Mon application FastAPI se lance sur le port 30000
+J'ai créé deux tables sur la route /table
+Je peux lire les différentes tables sur la route /tables
+
